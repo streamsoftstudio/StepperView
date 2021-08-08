@@ -34,6 +34,7 @@ public class StepView: UIView {
 	public var isFinalElement: Bool = false
 	public var stepTitle: String = ""
 	public var stepActiveColor: UIColor!
+	public var stepInactiveColor: UIColor!
 	
 	public override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -45,19 +46,20 @@ public class StepView: UIView {
 		commonInit()
 	}
 	
-	public init(title: String, tag: Int, activeColor: UIColor = .blue) {
+	public init(title: String, tag: Int, activeColor: UIColor = .blue, inactiveColor: UIColor = .lightGray) {
 		super.init(frame: .zero)
 		self.stepTitle = title
 		self.tag = tag
 		self.stepActiveColor = activeColor
+		self.stepInactiveColor = inactiveColor
 		commonInit()
 	}
 	
 	private func commonInit() {
 		self.translatesAutoresizingMaskIntoConstraints = false
 		self.checkCircle.image = UIImage(systemName: "\(tag).circle.fill")
-		self.checkCircle.tintColor = .lightGray
-		self.stepLabel.textColor = .darkGray
+		self.checkCircle.tintColor = self.stepInactiveColor
+		self.stepLabel.textColor = .lightGray
 		self.stepLabel.font = UIFont(name: "MessinaSans-Book", size: 14)
 		self.stepLabel.numberOfLines = 0
 		self.stepLabel.text = stepTitle
@@ -156,7 +158,7 @@ public class StepView: UIView {
 	
 	func setIsFinal(_ isFinal: Bool) {
 		self.isFinalElement = isFinal
-		self.nextStepPath.backgroundColor = isFinalElement ? .clear: .lightGray
+		self.nextStepPath.backgroundColor = isFinalElement ? .clear: self.stepInactiveColor
 	}
 	
 	private var isDone: Bool = false {
@@ -183,11 +185,11 @@ public class StepView: UIView {
 					self.checkCircle.tintColor = self.stepActiveColor
 					self.stepLabel.textColor = self.stepActiveColor
 				case false:
-					self.checkCircle.tintColor = .lightGray
+					self.checkCircle.tintColor = self.stepInactiveColor
 					self.stepLabel.textColor = .lightGray
 			}
 			self.checkCircle.image = UIImage(systemName: "\(tag).circle.fill")
-			self.nextStepPath.backgroundColor = isFinalElement ? .clear : .lightGray
+			self.nextStepPath.backgroundColor = isFinalElement ? .clear : self.stepInactiveColor
 			DispatchQueue.main.async {
 				self.nextStepPath.superview!.layoutIfNeeded()
 			}
