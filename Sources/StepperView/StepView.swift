@@ -31,22 +31,22 @@ public class StepView: UIView {
 			setupViewDisplay()
 		}
 	}
-	public var isFinalElement: Bool = false
-	public var stepTitle: String = ""
-	public var stepActiveColor: UIColor!
-	public var stepInactiveColor: UIColor!
+	var isFinalElement: Bool = false
+	var stepTitle: String = ""
+	var stepActiveColor: UIColor!
+	var stepInactiveColor: UIColor!
 	
-	public override init(frame: CGRect) {
+	override init(frame: CGRect) {
 		super.init(frame: frame)
 		commonInit()
 	}
 	
-	public required init?(coder: NSCoder) {
+	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		commonInit()
 	}
 	
-	public init(title: String, tag: Int, activeColor: UIColor = .blue, inactiveColor: UIColor = .lightGray) {
+	init(title: String, tag: Int, activeColor: UIColor = .blue, inactiveColor: UIColor = .lightGray) {
 		super.init(frame: .zero)
 		self.stepTitle = title
 		self.tag = tag
