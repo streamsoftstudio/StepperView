@@ -22,6 +22,7 @@ public class StepperView: UIView {
 		}
 	}
 	public var activeColor: UIColor = .blue
+	public var inactiveColor: UIColor = .lightGray
 	private var steps: [StepView] = []
 	public weak var delegate: StepperViewNavigationDelegate?
 	
@@ -99,7 +100,7 @@ public class StepperView: UIView {
 	}
 	
 	private func createItem(step: StepperViewStepDisplayable, tag: Int) -> StepView {
-		let step = StepView(title: step.title, tag: tag, activeColor: self.activeColor)
+		let step = StepView(title: step.title, tag: tag, activeColor: self.activeColor, inactiveColor: inactiveColor)
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(navigateTo))
 		step.addGestureRecognizer(tapGesture)
 		return step
