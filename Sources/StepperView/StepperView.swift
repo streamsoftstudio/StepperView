@@ -112,11 +112,11 @@ public class StepperView: UIView {
 		self.delegate?.shouldNavigateToStep(view)
 	}
 	
-	public func nextItem(_ completion: (Int, Bool, Bool)->()) {
+	public func nextItem(_ completion: (Bool)->()) {
 		self.updateSteps(.forward, completion)
 	}
 	
-	public func previousItem(_ completion: (Int, Bool, Bool)->()) {
+	public func previousItem(_ completion: (Bool)->()) {
 		self.updateSteps(.back, completion)
 	}
 	
@@ -125,43 +125,52 @@ public class StepperView: UIView {
 			s.isSelected = false
 			if s == step {
 				s.stepSelected()
+				self.currentlySelectedItemIndex = s.tag
 			}
 		}
 	}
 	
-	private func updateSteps(_ direction: StepDirection, _ completion:(Int, Bool, Bool)->()) {
-		switch direction {
-			case .forward: self.currentlySelectedItemIndex += 1
-			case .back: self.currentlySelectedItemIndex -= 1
-		}
-		let tag = self.currentlySelectedItemIndex
+	private func updateSteps(_ direction: StepDirection, _ completion:(Bool)->()) {
+		var currentStepIndex = min(max(self.currentlySelectedItemIndex, 0), steps.count - 1)
 		
-		guard tag < steps.count else {
-			steps.last?.stepChecked(.done)
-			completion(tag, false, steps.last!.isFinalElement)
-			return
-		}
-		guard tag >= 0 else {return}
+		let currentItem = steps[currentStepIndex]
 		
-		let nextStepTag = tag + 1
-		let prevStepTag = max(tag - 1, 0)
-		switch direction {
-			case .forward: completion(nextStepTag, nextStepTag == steps.count, false)
-			case .back: completion(prevStepTag, prevStepTag == steps.count, false)
-		}
-		
-		self.delegate?.shouldNavigateToStep(steps[tag])
-		
-		let currentStep = steps[tag]
-		let previousStep = steps[prevStepTag]
+		var nextItem: StepView
 		
 		switch direction {
 			case .forward:
-				previousStep.stepChecked(.done)
-				currentStep.stepChecked(.selected)
+				let clampedIndex = min(currentStepIndex + 1, steps.count - 1)
+				nextItem = steps[clampedIndex]
+				self.currentlySelectedItemIndex += 1
+				if self.currentlySelectedItemIndex > steps.count - 1 {
+					self.currentlySelectedItemIndex = steps.count - 1
+				}
 			case .back:
-				previousStep.stepChecked(.selected)
-				currentStep.stepChecked(.inactive)
+				let clampedIndex = max(currentStepIndex - 1, 0)
+				nextItem = steps[clampedIndex]
+				self.currentlySelectedItemIndex -= 1
+				if self.currentlySelectedItemIndex < 0 {
+					self.currentlySelectedItemIndex = 0
+				}
+		}
+		
+		if direction == .forward {
+			guard !currentItem.isFinalElement else {
+				currentItem.stepChecked(.done)
+				completion(true)
+				return
+			}
+		}
+		
+		self.delegate?.shouldNavigateToStep(nextItem)
+		completion(currentItem.isFinalElement)
+		switch direction {
+			case .forward:
+				currentItem.stepChecked(.done)
+				nextItem.stepChecked(.selected)
+			case .back:
+				currentItem.stepChecked(.inactive)
+				nextItem.stepChecked(.selected)
 		}
 	}
 	

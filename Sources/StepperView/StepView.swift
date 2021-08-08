@@ -158,7 +158,7 @@ public class StepView: UIView {
 	
 	func setIsFinal(_ isFinal: Bool) {
 		self.isFinalElement = isFinal
-		self.nextStepPath.backgroundColor = isFinalElement ? .clear: self.stepInactiveColor
+		self.nextStepPath.backgroundColor = isFinalElement ? .clear: stepInactiveColor
 	}
 	
 	var isDone: Bool = false {
@@ -166,12 +166,15 @@ public class StepView: UIView {
 			switch isDone {
 				case true:
 					self.checkCircle.image = UIImage(systemName: "checkmark.circle.fill")
+					self.checkCircle.tintColor = stepActiveColor
+					self.nextStepPath.backgroundColor = isFinalElement ? .clear : stepActiveColor
+					self.stepLabel.textColor = stepActiveColor
 				case false:
 					self.checkCircle.image = UIImage(systemName: "\(tag).circle.fill")
+					self.checkCircle.tintColor = isSelected ? stepActiveColor : stepInactiveColor
+					self.nextStepPath.backgroundColor = isFinalElement ? .clear : isSelected ? stepActiveColor : stepInactiveColor
+					self.stepLabel.textColor = isSelected ? stepActiveColor : .darkGray
 			}
-			self.checkCircle.tintColor = self.stepActiveColor
-			self.nextStepPath.backgroundColor = isFinalElement ? .clear : self.stepActiveColor
-			self.stepLabel.textColor = self.stepActiveColor
 			DispatchQueue.main.async {
 				self.nextStepPath.superview!.layoutIfNeeded()
 			}
@@ -182,14 +185,14 @@ public class StepView: UIView {
 		didSet {
 			switch isSelected {
 				case true:
-					self.checkCircle.tintColor = self.stepActiveColor
-					self.stepLabel.textColor = self.stepActiveColor
+					checkCircle.tintColor = stepActiveColor
+					stepLabel.textColor = stepActiveColor
 				case false:
-					self.checkCircle.tintColor = self.stepInactiveColor
-					self.stepLabel.textColor = .darkGray
+					checkCircle.tintColor = stepInactiveColor
+					stepLabel.textColor = .darkGray
 			}
 			self.checkCircle.image = UIImage(systemName: "\(tag).circle.fill")
-			self.nextStepPath.backgroundColor = isFinalElement ? .clear : self.stepInactiveColor
+			self.nextStepPath.backgroundColor = isFinalElement ? .clear : stepInactiveColor
 			DispatchQueue.main.async {
 				self.nextStepPath.superview!.layoutIfNeeded()
 			}
@@ -202,11 +205,11 @@ public class StepView: UIView {
 	
 	func stepChecked(_ state: StepState) {
 		switch state {
-			case .selected: self.isSelected = true
-			case .done: self.isDone = true
+			case .selected: isSelected = true
+			case .done: isDone = true
 			case .inactive:
-				self.isSelected = false
-				self.isDone = false
+				isSelected = false
+				isDone = false
 		}
 	}
 	
