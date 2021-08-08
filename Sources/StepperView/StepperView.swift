@@ -113,13 +113,11 @@ public class StepperView: UIView {
 	}
 	
 	public func nextItem(_ completion: (Int, Bool, Bool)->()) {
-		self.currentlySelectedItemIndex += 1
-		self.updateSteps(self.currentlySelectedItemIndex, completion)
+		self.updateSteps(.forward, completion)
 	}
 	
 	public func previousItem(_ completion: (Int, Bool, Bool)->()) {
-		self.currentlySelectedItemIndex -= 1
-		self.updateSteps(self.currentlySelectedItemIndex, completion)
+		self.updateSteps(.back, completion)
 	}
 	
 	public func setSelected(_ step: StepView) {
@@ -131,29 +129,43 @@ public class StepperView: UIView {
 		}
 	}
 	
-	private func updateSteps(_ tag: Int, _ completion:(Int, Bool, Bool)->()) {
+	private func updateSteps(_ direction: StepDirection, _ completion:(Int, Bool, Bool)->()) {
+		switch direction {
+			case .forward: self.currentlySelectedItemIndex += 1
+			case .back: self.currentlySelectedItemIndex -= 1
+		}
+		let tag = self.currentlySelectedItemIndex
+		
 		guard tag < steps.count else {
 			steps.last?.stepChecked(.done)
 			completion(tag, false, steps.last!.isFinalElement)
 			return
 		}
+		guard tag >= 0 else {return}
+		
 		let nextStepTag = tag + 1
 		let prevStepTag = tag - 1
-		completion(nextStepTag, nextStepTag == steps.count, false)
+		switch direction {
+			case .forward: completion(nextStepTag, nextStepTag == steps.count, false)
+			case .back: completion(prevStepTag, prevStepTag == steps.count, false)
+		}
+		
 		self.delegate?.shouldNavigateToStep(steps[tag])
 		
 		let currentStep = steps[tag]
-		if currentStep.isSelected || currentStep.isDone {
-			currentStep.stepChecked(.inactive)
-		} else {
-			currentStep.stepChecked(.selected)
-		}
-		
 		let previousStep = steps[prevStepTag]
-		if previousStep.isDone {
-			previousStep.stepChecked(.selected)
-		} else {
-			previousStep.stepChecked(.done)
+		
+		switch direction {
+			case .forward:
+				previousStep.stepChecked(.done)
+				currentStep.stepChecked(.selected)
+			case .back:
+				previousStep.stepChecked(.selected)
+				currentStep.stepChecked(.inactive)
 		}
+	}
+	
+	enum StepDirection {
+		case forward, back
 	}
 }
