@@ -16,7 +16,7 @@ public class StepView: UIView {
 	
 	private var mainStackAxis: NSLayoutConstraint.Axis = .horizontal
 	private var subStackAxis: NSLayoutConstraint.Axis = .vertical
-	public var axis: NSLayoutConstraint.Axis = .vertical {
+	var axis: NSLayoutConstraint.Axis = .vertical {
 		didSet {
 			switch axis {
 				case .vertical:
