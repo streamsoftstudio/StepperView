@@ -59,7 +59,7 @@ public class StepView: UIView {
 		self.translatesAutoresizingMaskIntoConstraints = false
 		self.checkCircle.image = UIImage(systemName: "\(tag).circle.fill")
 		self.checkCircle.tintColor = self.stepInactiveColor
-		self.stepLabel.textColor = .lightGray
+		self.stepLabel.textColor = .darkGray
 		self.stepLabel.font = UIFont(name: "MessinaSans-Book", size: 14)
 		self.stepLabel.numberOfLines = 0
 		self.stepLabel.text = stepTitle
@@ -186,7 +186,7 @@ public class StepView: UIView {
 					self.stepLabel.textColor = self.stepActiveColor
 				case false:
 					self.checkCircle.tintColor = self.stepInactiveColor
-					self.stepLabel.textColor = .lightGray
+					self.stepLabel.textColor = .darkGray
 			}
 			self.checkCircle.image = UIImage(systemName: "\(tag).circle.fill")
 			self.nextStepPath.backgroundColor = isFinalElement ? .clear : self.stepInactiveColor
