@@ -144,7 +144,7 @@ public class StepperView: UIView {
 		guard tag >= 0 else {return}
 		
 		let nextStepTag = tag + 1
-		let prevStepTag = tag - 1
+		let prevStepTag = max(tag - 1, 0)
 		switch direction {
 			case .forward: completion(nextStepTag, nextStepTag == steps.count, false)
 			case .back: completion(prevStepTag, prevStepTag == steps.count, false)
