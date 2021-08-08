@@ -161,7 +161,7 @@ public class StepView: UIView {
 		self.nextStepPath.backgroundColor = isFinalElement ? .clear: self.stepInactiveColor
 	}
 	
-	private var isDone: Bool = false {
+	var isDone: Bool = false {
 		didSet {
 			switch isDone {
 				case true:
@@ -204,10 +204,13 @@ public class StepView: UIView {
 		switch state {
 			case .selected: self.isSelected = true
 			case .done: self.isDone = true
+			case .inactive:
+				self.isSelected = false
+				self.isDone = false
 		}
 	}
 	
 	enum StepState {
-		case selected, done
+		case selected, done, inactive
 	}
 }

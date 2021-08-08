@@ -117,6 +117,11 @@ public class StepperView: UIView {
 		self.updateSteps(self.currentlySelectedItemIndex, completion)
 	}
 	
+	public func previousItem(_ completion: (Int, Bool, Bool)->()) {
+		self.currentlySelectedItemIndex -= 1
+		self.updateSteps(self.currentlySelectedItemIndex, completion)
+	}
+	
 	public func setSelected(_ step: StepView) {
 		for s in steps {
 			s.isSelected = false
@@ -138,9 +143,17 @@ public class StepperView: UIView {
 		self.delegate?.shouldNavigateToStep(steps[tag])
 		
 		let currentStep = steps[tag]
-		currentStep.stepChecked(.selected)
+		if currentStep.isSelected || currentStep.isDone {
+			currentStep.stepChecked(.inactive)
+		} else {
+			currentStep.stepChecked(.selected)
+		}
 		
 		let previousStep = steps[prevStepTag]
-		previousStep.stepChecked(.done)
+		if previousStep.isDone {
+			previousStep.stepChecked(.selected)
+		} else {
+			previousStep.stepChecked(.done)
+		}
 	}
 }
