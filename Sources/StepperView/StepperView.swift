@@ -110,7 +110,6 @@ public class StepperView: UIView {
 	
 	@objc private func navigateTo(_ sender: UITapGestureRecognizer) {
 		guard let view = sender.view as? StepView else {return}
-		print("Navigate to ", view.stepTitle)
 		self.delegate?.shouldNavigateToStep(view)
 	}
 	
