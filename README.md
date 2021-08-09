@@ -9,13 +9,13 @@ Installing the `StepperView` is possible with `Swift Package Manager (SPM)`
 ### <u>_Swift Package Manager (SPM)_</u>
 The [Swift Package Manager](https://swift.org/package-manager/) is a dependency manager integrated into the `swift` compiler and `Xcode`.
 
-To integrate `StepperView` into an Xcode project, go to the project editor, and select `Swift Packages`. From here hit the `+` button and follow the prompts using  `https://github.com/drone/ff-ios-client-sdk.git` as the URL.
+To integrate `StepperView` into an Xcode project, go to the project editor, and select `Swift Packages`. From here hit the `+` button and follow the prompts using  `https://github.com/streamsoftstudio/StepperView.git` as the URL.
 
 To include `StepperView` in a Swift package, simply add it to the dependencies section of your `Package.swift` file. And add the product `StepperView` as a dependency for your targets.
 
 ```Swift
 dependencies: [
-	.package(url: "https://github.com/drone/ff-ios-client-sdk.git", .upToNextMinor(from: "0.0.5"))
+	.package(url: "https://github.com/streamsoftstudio/StepperView.git", .upToNextMinor(from: "1.0.0"))
 ]
 ```
 # _Using the `StepperView`_
