@@ -132,10 +132,8 @@ public class StepperView: UIView {
 	}
 	
 	private func updateSteps(_ direction: StepDirection, _ completion:(Bool)->()) {
-		var currentStepIndex = min(max(self.currentlySelectedItemIndex, 0), steps.count - 1)
-		
+		let currentStepIndex = min(max(self.currentlySelectedItemIndex, 0), steps.count - 1)
 		let currentItem = steps[currentStepIndex]
-		
 		var nextItem: StepView
 		
 		switch direction {
