@@ -193,7 +193,7 @@ public class StepView: UIView {
 					checkCircle.tintColor = stepInactiveColor
 					stepLabel.textColor = .darkGray
 			}
-			self.checkCircle.image = stepShape == .circular ? UIImage(systemName: "\(tag).circle.fill") : UIImage(systemName: "\(tag).sqquare.fill")
+			self.checkCircle.image = stepShape == .circular ? UIImage(systemName: "\(tag).circle.fill") : UIImage(systemName: "\(tag).square.fill")
 			self.nextStepPath.backgroundColor = isFinalElement ? .clear : stepInactiveColor
 			DispatchQueue.main.async {
 				self.nextStepPath.superview!.layoutIfNeeded()
