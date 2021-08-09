@@ -35,6 +35,7 @@ public class StepView: UIView {
 	var stepTitle: String = ""
 	var stepActiveColor: UIColor!
 	var stepInactiveColor: UIColor!
+	var stepShape: StepShape!
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -46,18 +47,19 @@ public class StepView: UIView {
 		commonInit()
 	}
 	
-	init(title: String, tag: Int, activeColor: UIColor = .blue, inactiveColor: UIColor = .lightGray) {
+	init(title: String, tag: Int, activeColor: UIColor = .blue, inactiveColor: UIColor = .lightGray, shape: StepShape = .circular) {
 		super.init(frame: .zero)
 		self.stepTitle = title
 		self.tag = tag
 		self.stepActiveColor = activeColor
 		self.stepInactiveColor = inactiveColor
+		self.stepShape = shape
 		commonInit()
 	}
 	
 	private func commonInit() {
 		self.translatesAutoresizingMaskIntoConstraints = false
-		self.checkCircle.image = UIImage(systemName: "\(tag).circle.fill")
+		self.checkCircle.image = stepShape == .circular ? UIImage(systemName: "\(tag).circle.fill") : UIImage(systemName: "\(tag).square.fill")
 		self.checkCircle.tintColor = self.stepInactiveColor
 		self.stepLabel.textColor = .darkGray
 		self.stepLabel.font = UIFont(name: "MessinaSans-Book", size: 14)
@@ -165,12 +167,12 @@ public class StepView: UIView {
 		didSet {
 			switch isDone {
 				case true:
-					self.checkCircle.image = UIImage(systemName: "checkmark.circle.fill")
+					self.checkCircle.image = stepShape == .circular ? UIImage(systemName: "checkmark.circle.fill") : UIImage(systemName: "checkmark.square.fill")
 					self.checkCircle.tintColor = stepActiveColor
 					self.nextStepPath.backgroundColor = isFinalElement ? .clear : stepActiveColor
 					self.stepLabel.textColor = stepActiveColor
 				case false:
-					self.checkCircle.image = UIImage(systemName: "\(tag).circle.fill")
+					self.checkCircle.image = stepShape == .circular ? UIImage(systemName: "\(tag).circle.fill") : UIImage(systemName: "\(tag).square.fill")
 					self.checkCircle.tintColor = isSelected ? stepActiveColor : stepInactiveColor
 					self.nextStepPath.backgroundColor = isFinalElement ? .clear : isSelected ? stepActiveColor : stepInactiveColor
 					self.stepLabel.textColor = isSelected ? stepActiveColor : .darkGray
@@ -191,7 +193,7 @@ public class StepView: UIView {
 					checkCircle.tintColor = stepInactiveColor
 					stepLabel.textColor = .darkGray
 			}
-			self.checkCircle.image = UIImage(systemName: "\(tag).circle.fill")
+			self.checkCircle.image = stepShape == .circular ? UIImage(systemName: "\(tag).circle.fill") : UIImage(systemName: "\(tag).sqquare.fill")
 			self.nextStepPath.backgroundColor = isFinalElement ? .clear : stepInactiveColor
 			DispatchQueue.main.async {
 				self.nextStepPath.superview!.layoutIfNeeded()
@@ -216,4 +218,8 @@ public class StepView: UIView {
 	enum StepState {
 		case selected, done, inactive
 	}
+}
+
+public enum StepShape {
+	case circular, square
 }
